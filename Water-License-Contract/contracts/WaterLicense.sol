@@ -2,16 +2,20 @@
 
 pragma solidity ^0.8.0;
 
-import '../node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol';
+import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
 
 contract WaterLicense is ERC721 {
     uint public tokenValue;
     address owner;
     bool public isLicenseApproved;
+    uint totalVotes;
+    uint tokenId;
+    uint public waterQuality;
     constructor() ERC721("WaterLicense", "WL") {
         owner = msg.sender;
         tokenValue = 100;
         isLicenseApproved = false;
+        totalVotes = 0;
     }
 
     struct Voter {
@@ -19,13 +23,20 @@ contract WaterLicense is ERC721 {
         string email;
         uint weight;
         bool canVote;
+        bool isApproved;
     }
 
     mapping(address => Voter) voters;
-    uint totalVotes;
+
+    Voter[] public displayApprovers;
 
     modifier onlyOwner() {
         require(msg.sender == owner);
+        _;
+    }
+
+    modifier validLicense() {
+        require(isLicenseApproved == true);
         _;
     }
 
@@ -34,11 +45,15 @@ contract WaterLicense is ERC721 {
         voters[voter].canVote = true;
     }
 
-    function castVote(string memory name, string memory email) public returns(uint) {
+    function castVote(string memory name, string memory email, bool approval, uint waterRating) public returns(uint) {
         require(voters[msg.sender].canVote == true);
         voters[msg.sender].name = name;
         voters[msg.sender].email = email;
-        totalVotes += voters[msg.sender].weight;
+        if(approval)
+            totalVotes += voters[msg.sender].weight;
+
+        waterQuality = waterRating;
+        displayApprovers.push(Voter(name, email, voters[msg.sender].weight, voters[msg.sender].canVote, approval));
 
         if(totalVotes >= 3) {
             isLicenseApproved = true;
@@ -54,8 +69,9 @@ contract WaterLicense is ERC721 {
 
     mapping(address => buyer) buyers;
 
-    function buyWater() public {
+    function buyWater() public returns(address) validLicense {
         buyers[msg.sender].hasBought = true;
+        return msg.sender;
     }
 
     function rating(address reviewer, uint rate) public {
@@ -68,20 +84,20 @@ contract WaterLicense is ERC721 {
             tokenValue--;
     }
 
-    function mint(uint256 tokenId) public onlyOwner {
+    function mintToken() public onlyOwner returns(address) {
+        tokenId = waterQuality;
 		super._mint(msg.sender, tokenId);
+        return msg.sender;
 	}
 
-	function transferStar(address starOwner, address to, uint256 tokenId) public onlyOwner {
-		safeTransferFrom(starOwner, to, tokenId);
+	function transferLicense(address fromAddress, address toAddress) public onlyOwner returns(address) {
+		safeTransferFrom(fromAddress, toAddress, tokenId);
+        owner = toAddress;
+        return toAddress;
 	}
 
-    function renewLicense(string memory name, string memory email) public onlyOwner{
-        uint votes = castVote(name, email);
-
-        if(votes >= 3)
-            isLicenseApproved = true;
-        else
-            isLicenseApproved = false;
+    function renewLicense() public onlyOwner {
+        totalVotes = 0;
+        isLicenseApproved = true;
     }
 }
