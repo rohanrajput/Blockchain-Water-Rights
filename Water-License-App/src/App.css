@@ -1,0 +1,32 @@
+.App {
+  text-align: center;
+  display: flex;
+  background-color: black;
+  color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.182);
+  padding: 10px 15px;
+  align-items: center;
+}
+
+.navbar-class {
+  display: flex;
+  background-color: inherit;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.182);
+}
+
+.ul-class {
+  list-style: none;
+  display: flex;
+  padding: 0;
+  margin-left: 15px;
+}
+
+li {
+  margin-left: 10px;
+  color: white;
+}
+
+button {
+  margin-left: auto;
+  margin-right: 0px;
+}

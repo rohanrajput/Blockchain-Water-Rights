@@ -1,0 +1,7 @@
+node_modules
+package-lock.json
+build
+Water-License-App/node_modules
+Water-License-App/package-lock.json
+Water-License-Contract/build
+Water-License-Contract/node_modules
