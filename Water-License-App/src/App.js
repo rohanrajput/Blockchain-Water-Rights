@@ -24,6 +24,7 @@ function App() {
         deployedNetwork && deployedNetwork.address
     );
     setDeployedContract(MyContract);
+    console.log("Contract address", MyContract._address);
   }
 
   async function loadWeb3() {
@@ -53,7 +54,7 @@ function App() {
     <Router>
       <Navbar bg="dark" variant="dark" sticky='top'>
         <Container>
-          <Navbar.Brand href="/">CSE 4/590 Water License Dapp</Navbar.Brand>
+          <Navbar.Brand href="/">CSE 4/526 Water License Dapp</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link as={Link} to="/">Voter</Nav.Link>
             <Nav.Link as={Link} to="/buyer">Buyer</Nav.Link>

@@ -18,20 +18,63 @@ const Voter = ( props ) => {
 
     const handleSubmit = async ( event ) => {
         event.preventDefault();
-        const result = await props.contract.methods.castVote(voterObj.approval, voterObj.waterRating).send({from: props.account, gas: "1000000"})
-            .then(async (response) => {
-                const customQuery = query(collection(db, "Voters"));
-                const querySnapshot = await getDocs(customQuery);
-                const array2 = querySnapshot.docs.map((doc) => (doc.data().data['address']));
-                if(!array2.includes(voterObj.address)) {
-                    addDoc(collection(db, "Voters"), {
-                        data: {...voterObj, address: props.account}
-                    })
-                }
-            })
-            .catch((error)=> {
-                console.log(error);
-            });
+        //const result = await props.contract.methods.castVote(voterObj.approval, voterObj.waterRating).send({from: props.account, gas: "1000000"})
+        //    .then(async (response) => {
+        //        const customQuery = query(collection(db, "Voters"));
+        //        const querySnapshot = await getDocs(customQuery);
+        //        const array2 = querySnapshot.docs.map((doc) => (doc.data().data['address']));
+        //        if(!array2.includes(voterObj.address)) {
+        //            addDoc(collection(db, "Voters"), {
+        //                data: {...voterObj, address: props.account}
+        //            })
+        //        }
+        //    })
+        //    .catch((error)=> {
+        //        console.log(error);
+        //    });
+
+        const functionAbi = props.contract.methods.castVote(voterObj.approval, voterObj.waterRating).encodeABI();
+        const gas = await props.contract.methods.castVote(voterObj.approval, voterObj.waterRating).estimateGas({ from: props.account });
+        const transactionParameter = {
+        from: props.account,
+        to: props.contract._address,
+        data: props.contract.methods.castVote(voterObj.approval, voterObj.waterRating).encodeABI(),
+        //value: parseInt(Web3.utils.toWei('0.001', 'ether')).toString(16),
+        gas: parseInt(gas).toString(16)
+        //gasPrice: '0x9184e72a000' //10000000000000
+        };
+
+        await window.ethereum.request({
+            method: "eth_sendTransaction",
+            params: [transactionParameter]
+        })
+        .then(async (response) => {
+            const customQuery = query(collection(db, "Voters"));
+            const querySnapshot = await getDocs(customQuery);
+            const array2 = querySnapshot.docs.map((doc) => (doc.data()['address']));
+            if(!array2.includes(voterObj.address)) {
+                addDoc(collection(db, "Voters"), {
+                    data: {...voterObj, address: props.account}
+                })
+            }
+        })
+        .catch((error)=> {
+            console.log(error);
+        });
+
+        event.target.reset();
+        //await Web3.eth.sendTransaction({
+        //    from: props.account,
+        //    to: props.contract._address,
+        //    data: props.contract.methods.castVote(voterObj.approval, voterObj.waterRating).encodeABI(), 
+        //}, (error, trxHash) => {
+        //    if(error) {
+        //        console.log(error);
+        //    }
+        //    else {
+        //        console.log(trxHash);
+        //    }
+        //})
     };
 
     return (

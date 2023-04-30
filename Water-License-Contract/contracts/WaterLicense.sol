@@ -110,20 +110,14 @@ contract WaterLicense is ERC721 {
 
     function setNewOwner(address payable toAddress) public onlyOwner {
         newOwner = toAddress;
-    }
-
-	function transferLicense() public payable {
-        if(msg.sender != newOwner || msg.value != tokenValue) {
-            revert();
-        }
-
-		safeTransferFrom(owner, msg.sender, tokenId); //transfer ownership of the token
-        owner.transfer(tokenValue); //transfer ethers from newOwner account to the SC and from SC to the owner
-        owner = newOwner; //transfer ownership of the SC to the new owner
+        safeTransferFrom(owner, newOwner, tokenId); //transfer ownership of the token
+        owner.transfer(address(this).balance);
+        owner = newOwner;
     }
 
     function renewLicense() public onlyOwner {
         totalVotes = 0;
         isLicenseApproved = false;
+        state = phase.regPh;
     }
 }

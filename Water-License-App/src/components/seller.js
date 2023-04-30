@@ -11,6 +11,9 @@ const Seller = ( props ) => {
     const [voterAccount, setVoterAccount] = useState('');
     const [weightage, setWeightage] = useState(0);
     const [newPhase, setNewPhase] = useState(0);
+    const [TokenValue, setTokenValue] = useState('');
+    const [tokenID, setTokenID] = useState('');
+    const [newOwner, SetNewOwner] = useState('');
 
     const displayOwner = async () => {
         const a = await props.contract.methods.owner().call();
@@ -22,6 +25,16 @@ const Seller = ( props ) => {
         setLicenseStatus(a);
     }
 
+    const displayTokenValue = async () => {
+        const a = await props.contract.methods.tokenValue().call();
+        setTokenValue(a);
+    }
+
+    const displayTokenId = async () => {
+        const a = await props.contract.methods.waterQuality().call();
+        setTokenID(a);
+    }
+
     const getCurrentPhase = async () => {
         const a = await props.contract.methods.state().call();
         setCurrentPhase(a);
@@ -29,22 +42,168 @@ const Seller = ( props ) => {
 
     const registerVoter = async ( event ) => {
         event.preventDefault();
-        const result = await props.contract.methods.registerVoter(voterAccount, weightage).send({from: props.account})
-            .then((response) => {
-                console.log(response);
-            }).catch((error) => {
-                console.log(error);
-            });
+        //const result = await props.contract.methods.registerVoter(voterAccount, weightage).send({from: props.account})
+        //    .then((response) => {
+        //        console.log(response);
+        //    }).catch((error) => {
+        //        console.log(error);
+        //    });
+        
+        const functionAbi = props.contract.methods.registerVoter(voterAccount, weightage).encodeABI();
+        const gas = await props.contract.methods.registerVoter(voterAccount, weightage).estimateGas({ from: props.account });
+        const transactionParameter = {
+        from: props.account,
+        to: props.contract._address,
+        data: functionAbi,
+        //value: parseInt(Web3.utils.toWei('0.01', 'ether')).toString(16)
+        gas: parseInt(gas).toString(16)
+        };
+
+        await window.ethereum.request({
+            method: "eth_sendTransaction",
+            params: [transactionParameter]
+        })
+        .then((trxHash) => {
+            console.log(trxHash);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+        
+        event.target.reset();
     }
 
     const changePhase = async ( event ) => {
         event.preventDefault();
-        const result = await props.contract.methods.changePhase(newPhase).send({from: props.account})
-            .then((response) => {
-                console.log(response);
-            }).catch((error) => {
-                console.log(error);
-            });
+        //const result = await props.contract.methods.changePhase(newPhase).send({from: props.account})
+        //    .then((response) => {
+        //        console.log(response);
+        //    }).catch((error) => {
+        //        console.log(error);
+        //    });
+
+        const functionAbi = props.contract.methods.changePhase(newPhase).encodeABI();
+        const gas = await props.contract.methods.changePhase(newPhase).estimateGas({ from: props.account });
+        const transactionParameter = {
+        from: props.account,
+        to: props.contract._address,
+        data: functionAbi,
+        //value: parseInt(Web3.utils.toWei('0.01', 'ether')).toString(16)
+        gas: parseInt(gas).toString(16)
+        };
+
+        await window.ethereum.request({
+            method: "eth_sendTransaction",
+            params: [transactionParameter]
+        })
+        .then((trxHash) => {
+            console.log(trxHash);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+        event.target.reset();
+    }
+
+    const mintToken = async () => {
+        //const result = await props.contract.methods.mintToken().send({from: props.account, gas: "1000000"});
+
+        const functionAbi = props.contract.methods.mintToken().encodeABI();
+        const gas = await props.contract.methods.mintToken().estimateGas({ from: props.account });
+        const transactionParameter = {
+        from: props.account,
+        to: props.contract._address,
+        data: functionAbi,
+        //value: parseInt(Web3.utils.toWei('0.01', 'ether')).toString(16)
+        gas: parseInt(gas).toString(16)
+        };
+
+        await window.ethereum.request({
+            method: "eth_sendTransaction",
+            params: [transactionParameter]
+        })
+        .then((trxHash) => {
+            console.log(trxHash);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+
+    const changeOwner = async ( event ) => {
+        event.preventDefault();
+        const functionAbi = props.contract.methods.setNewOwner(newOwner).encodeABI();
+        const gas = await props.contract.methods.setNewOwner(newOwner).estimateGas({ from: props.account });
+        const transactionParameter = {
+        from: props.account,
+        to: props.contract._address,
+        data: functionAbi,
+        //value: parseInt(Web3.utils.toWei('0.01', 'ether')).toString(16)
+        gas: parseInt(gas).toString(16)
+        };
+
+        await window.ethereum.request({
+            method: "eth_sendTransaction",
+            params: [transactionParameter]
+        })
+        .then(async (trxHash) => {
+            console.log(trxHash);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+
+    // const TransferLicense = async () => {
+    //     //event.preventDefault();
+    //     console.log("line1");
+    //     const functionAbi = await props.contract.methods.transferLicense().encodeABI();
+    //     console.log("afterfunction ABHi");
+    //     const gas = await props.contract.methods.transferLicense().estimateGas({ from: props.accont });
+    //     console.log("tokenValue", TokenValue);
+    //     const transactionParameter = {
+    //     from: props.account,
+    //     to: props.contract._address,
+    //     data: functionAbi,
+    //     //value: parseInt(Web3.utils.toWei(TokenValue, 'ether')).toString(16),
+    //     gas: parseInt(gas).toString() 
+    //     };
+    //     console.log("hihi");
+    //     await window.ethereum.request({
+    //         method: "eth_sendTransaction",
+    //         params: [transactionParameter]
+    //     })
+    //     .then((trxHash) => {
+    //         console.log(trxHash);
+    //     })
+    //     .catch((error) => {
+    //         console.log(error);
+    //     });        
+    // }
+
+    const renewLicense = async ( event ) => {
+        event.preventDefault();
+        const functionAbi = props.contract.methods.renewLicense().encodeABI();
+        const gas = await props.contract.methods.renewLicense().estimateGas({ from: props.account });
+        const transactionParameter = {
+        from: props.account,
+        to: props.contract._address,
+        data: functionAbi,
+        //value: parseInt(Web3.utils.toWei('0.01', 'ether')).toString(16)
+        gas: parseInt(gas).toString(16)
+        };
+
+        await window.ethereum.request({
+            method: "eth_sendTransaction",
+            params: [transactionParameter]
+        })
+        .then(async (trxHash) => {
+            console.log(trxHash);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
     }
 
     useEffect(() => {
@@ -77,15 +236,15 @@ const Seller = ( props ) => {
                         <h1>Mint token and transfer ownership here</h1>
                     </Card.Header>
                     <Card.Body>
-                        <Button variant='primary' type='submit'>Mint token</Button>
+                        <Button variant='primary' type='submit' onClick={mintToken}>Mint token</Button>
                     </Card.Body>
                     <Card.Body>
-                        <Form>
+                        <Form onSubmit={changeOwner}>
                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                 <Form.Label>To address</Form.Label>
-                                <Form.Control type="text" placeholder="Enter the address of the recipient" />
+                                <Form.Control type="text" placeholder="Enter the address of new owner" onChange={(event) => SetNewOwner(event.target.value)} />
                             </Form.Group>
-                            <Button variant='primary' type='submit'>Transfer</Button>
+                            <Button variant='primary' type='submit'>Set new owner</Button>
                         </Form>
                     </Card.Body>
                 </Card>
@@ -116,7 +275,18 @@ const Seller = ( props ) => {
                         <h2>{_owner}</h2>
                         <Button variant='primary' type='submit' onClick={displayLicenseStatus}>isLicenseApproved</Button>
                         <h2>{`${licenseStatus}`}</h2>
-                        <Button variant='primary' type='submit'>tokenValue</Button>
+                        <Button variant='primary' type='submit' onClick={displayTokenValue}>tokenValue</Button>
+                        <h2>{`${TokenValue}`}</h2>
+                        <Button variant='primary' type='submit' onClick={displayTokenId}>Token ID/Water Quality</Button>
+                        <h2>{`${tokenID}`}</h2>
+                    </Card.Body>
+                </Card>
+                <Card>
+                    <Card.Header className='text-center'>
+                        <h1>Renew License here</h1>
+                    </Card.Header>
+                    <Card.Body>
+                        <Button variant='primary' type='submit' onClick={renewLicense}>Renew License</Button>
                     </Card.Body>
                 </Card>
             </Container>
