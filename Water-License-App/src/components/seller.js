@@ -3,6 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { Button, Container, Form, Card } from 'react-bootstrap';
 import myContract from "../WaterLicense.json"
 import Web3 from 'web3';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Seller = ( props ) => {
     const [_owner, setOwner] = useState('');
@@ -42,12 +45,6 @@ const Seller = ( props ) => {
 
     const registerVoter = async ( event ) => {
         event.preventDefault();
-        //const result = await props.contract.methods.registerVoter(voterAccount, weightage).send({from: props.account})
-        //    .then((response) => {
-        //        console.log(response);
-        //    }).catch((error) => {
-        //        console.log(error);
-        //    });
         
         const functionAbi = props.contract.methods.registerVoter(voterAccount, weightage).encodeABI();
         const gas = await props.contract.methods.registerVoter(voterAccount, weightage).estimateGas({ from: props.account });
@@ -75,12 +72,6 @@ const Seller = ( props ) => {
 
     const changePhase = async ( event ) => {
         event.preventDefault();
-        //const result = await props.contract.methods.changePhase(newPhase).send({from: props.account})
-        //    .then((response) => {
-        //        console.log(response);
-        //    }).catch((error) => {
-        //        console.log(error);
-        //    });
 
         const functionAbi = props.contract.methods.changePhase(newPhase).encodeABI();
         const gas = await props.contract.methods.changePhase(newPhase).estimateGas({ from: props.account });
@@ -129,6 +120,20 @@ const Seller = ( props ) => {
         .catch((error) => {
             console.log(error);
         });
+
+        props.contract.getPastEvents('showMint')
+        .then((results) => {
+            console.log(results);
+            console.log(results[0].returnValues.show);
+            toast.success(results[0].returnValues.show, {
+                position: toast.POSITION.BOTTOM_CENTER,
+                autoClose: 8000
+            })
+        })
+        .catch((error) => {
+            console.log(error);
+            toast(error);
+        });
     }
 
     const changeOwner = async ( event ) => {
@@ -154,33 +159,6 @@ const Seller = ( props ) => {
             console.log(error);
         });
     }
-
-    // const TransferLicense = async () => {
-    //     //event.preventDefault();
-    //     console.log("line1");
-    //     const functionAbi = await props.contract.methods.transferLicense().encodeABI();
-    //     console.log("afterfunction ABHi");
-    //     const gas = await props.contract.methods.transferLicense().estimateGas({ from: props.accont });
-    //     console.log("tokenValue", TokenValue);
-    //     const transactionParameter = {
-    //     from: props.account,
-    //     to: props.contract._address,
-    //     data: functionAbi,
-    //     //value: parseInt(Web3.utils.toWei(TokenValue, 'ether')).toString(16),
-    //     gas: parseInt(gas).toString() 
-    //     };
-    //     console.log("hihi");
-    //     await window.ethereum.request({
-    //         method: "eth_sendTransaction",
-    //         params: [transactionParameter]
-    //     })
-    //     .then((trxHash) => {
-    //         console.log(trxHash);
-    //     })
-    //     .catch((error) => {
-    //         console.log(error);
-    //     });        
-    // }
 
     const renewLicense = async ( event ) => {
         event.preventDefault();
@@ -237,6 +215,7 @@ const Seller = ( props ) => {
                     </Card.Header>
                     <Card.Body>
                         <Button variant='primary' type='submit' onClick={mintToken}>Mint token</Button>
+                        <ToastContainer/>
                     </Card.Body>
                     <Card.Body>
                         <Form onSubmit={changeOwner}>

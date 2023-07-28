@@ -1,0 +1,17 @@
+{
+  "hosting": {
+    "public": "build",
+    "site": "cse526blockchain-water-license",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

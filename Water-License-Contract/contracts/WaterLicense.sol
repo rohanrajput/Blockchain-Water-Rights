@@ -51,6 +51,8 @@ contract WaterLicense is ERC721 {
         _;
     }
 
+    event showMint(string show);
+
     function changePhase(phase ph) public onlyOwner {
         require(ph > state);
         state = ph;
@@ -105,6 +107,7 @@ contract WaterLicense is ERC721 {
 
     function mintToken() public onlyOwner {
         tokenId = waterQuality;
+        emit showMint(string(abi.encodePacked("Your token with token ID: ", tokenId, " has been minted!")));
 		super._mint(owner, tokenId);
 	}
 

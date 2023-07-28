@@ -41,30 +41,6 @@ const Buyer = (props) => {
     setApprovers(array2);
   };
 
-  //const handlePurchase = async (event) => {
-  //  event.preventDefault();
-  //  const msgValue = Web3.utils.toWei(etherAmt, "ether");
-  //  console.log(msgValue);
-  //  const result = await props.contract.methods
-  //    .buyWater()
-  //    .send({ from: props.account, value: msgValue }).on('transactionHash', function(hash) {
-  //      console.log('Transaction hash: ' + hash);
-  //    })
-  //    .on('confirmation', function(confirmationNumber, receipt) {
-  //      console.log('Confirmation number: ' + confirmationNumber);
-  //      console.log('Receipt: ' + receipt);
-  //    })
-  //    .on('error', function(error) {
-  //      console.error('Error: ' + error);
-  //    });
-  //  addDoc(collection(db, "Buyers"), {
-  //    address: props.account,
-  //    value: msgValue,
-  //    rating: null,
-  //  });
-  //  event.target.reset();
-  //};
-
 const handlePurchase = async (event) => {
     event.preventDefault();
     const functionAbi = props.contract.methods.buyWater().encodeABI();
@@ -91,47 +67,10 @@ const handlePurchase = async (event) => {
         console.log(error);
     });
     event.target.reset();
-    //value: Web3.utils.toWei('1', 'ether'), // optional
-    //gas: 3000000, // optional
-    //gasPrice: Web3.utils.toWei('30', 'gwei'), // optional
-    //)
-    //(error, receipt) => {
-    //if (error) console.error(error);
-    //else {
-    //console.log(receipt);
-    ////res.json(receipt);
-    //    }
-    //});
-//.on('transactionHash', function(hash){
-//    console.log('Transaction hash:', hash);
-//})
-//.on('receipt', function(receipt){
-//    console.log('Transaction receipt:', receipt);
-//})
-//.on('error', function(error){
-//    console.error('Transaction error:', error);
-//});
 }
 
   const handleRating = async (event) => {
     event.preventDefault();
-    //const result = await props.contract.methods
-    //  .rating(waterRating)
-    //  .send({ from: props.account });
-    //console.log(props.account);
-    //const customQuery = query(
-    //  collection(db, "Buyers"),
-    //  where("address", "==", props.account), where("rating", "==", null)
-    //);
-    //console.log(customQuery);
-    //const querySnapshot = await getDocs(customQuery);
-    //console.log(querySnapshot);
-    //querySnapshot.forEach(async (document) => {
-    //  const docRef = doc(db, "Buyers", document.id);
-    //  await updateDoc(docRef, {
-    //     rating: waterRating
-    //  });
-    //});
 
     const functionAbi = props.contract.methods.rating(waterRating).encodeABI();
     const gas = await props.contract.methods.rating(waterRating).estimateGas({ from: props.account });
@@ -186,7 +125,8 @@ const handlePurchase = async (event) => {
           <h1>List of approvers:</h1>
           <ListGroup as="ol" numbered>
             {approvers.map((approver) => (
-              <ListGroup.Item
+              (approver.name !== undefined)?
+              (<ListGroup.Item
                 as="li"
                 className="d-flex justify-content-between align-items-start"
               >
@@ -194,7 +134,7 @@ const handlePurchase = async (event) => {
                   <div className="fw-bold">{approver.name}</div>
                   {approver.email}
                 </div>
-              </ListGroup.Item>
+              </ListGroup.Item>): ""
             ))}
           </ListGroup>
           <h2>Your Ethereum account address is:</h2>

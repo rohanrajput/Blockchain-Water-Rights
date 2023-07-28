@@ -16,9 +16,11 @@ function App() {
   const [deployedContract, setDeployedContract] = useState('');
 
   const initializeContract = async () => {
-    const web3 = new Web3("HTTP://127.0.0.1:7545");
+    //const web3 = new Web3("HTTP://127.0.0.1:7545");
+    const web3 = new Web3("https://sepolia.infura.io/v3/c2cc5b9ee76b478e8c1627d2d00b10df");
     const networkId = await web3.eth.net.getId();
     const deployedNetwork = myContract.networks[networkId];
+    console.log("networkID:", networkId, deployedNetwork)
     const MyContract = new web3.eth.Contract(
         myContract.abi,
         deployedNetwork && deployedNetwork.address
