@@ -29,10 +29,10 @@ Water will represent the digital asset in this case which will be tokenized to r
 The value of the token/nft will appreciate or depreciate when a buyer rates water after purchase has been made.
 On a scale of 0-5, if voter rates greater than or equal to 3, the token value will be appreciated by 1. And if the voter gives a rating of less than 3, the token value will be depreciated by 1.
 ## Use case diagram: <br />
-<img width="517" alt="image" src="https://github.com/rohanrajput/Blockchain-Water-Rights/assets/20306973/ffbfd975-e055-4aaf-926c-b06565f8d9e7">
+<img width="517" alt="image" src="https://github.com/rohanrajput/Blockchain-Water-Rights/assets/20306973/ffbfd975-e055-4aaf-926c-b06565f8d9e7" /> <br/>
 ## Contract Diagram: <br/>
-<img width="254" alt="image" src="https://github.com/rohanrajput/Blockchain-Water-Rights/assets/20306973/8ef5195d-5a12-47c8-9992-130e8c95d3d9">
+<img width="254" alt="image" src="https://github.com/rohanrajput/Blockchain-Water-Rights/assets/20306973/8ef5195d-5a12-47c8-9992-130e8c95d3d9"> <br/>
 ## Sequence Diagram: <br/>
-<img width="893" alt="image" src="https://github.com/rohanrajput/Blockchain-Water-Rights/assets/20306973/3fd74d3f-0e13-4172-9234-bea7c3df3f90">
+<img width="893" alt="image" src="https://github.com/rohanrajput/Blockchain-Water-Rights/assets/20306973/3fd74d3f-0e13-4172-9234-bea7c3df3f90" /> <br/>
 ## Architectural Diagram: <br/>
-<img width="910" alt="image" src="https://github.com/rohanrajput/Blockchain-Water-Rights/assets/20306973/e505c5ad-b040-4b96-9df5-96b041eb8747">
+<img width="910" alt="image" src="https://github.com/rohanrajput/Blockchain-Water-Rights/assets/20306973/e505c5ad-b040-4b96-9df5-96b041eb8747" /> <br/>
