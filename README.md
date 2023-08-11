@@ -12,10 +12,10 @@ https://cse526blockchain-water-license.web.app <br />
 ## Issue(s) addressed: <br/>
 Through our smart contract and blockchain based verification and validation we are trying to address issues related to water distribution in places where there is scarcity of water.
 Current distribution models have following problems:
-● Centralized management structure: The central authority can set any desired water quality to fraud the buyers of the water.
-● Weak compliance and lack of standards and norms: Since the entire data is held by a central authority the users do not have access to transparent and untampered records.
-● Information search cost: the central authority may ask for a subscription fees to access the water quality records and other related information.
-● Inequitable distribution of water: bureaucracy and corruption can prevent few specific users from creating purchase request.
+1. Centralized management structure: The central authority can set any desired water quality to fraud the buyers of the water.
+2. Weak compliance and lack of standards and norms: Since the entire data is held by a central authority the users do not have access to transparent and untampered records.
+3. Information search cost: the central authority may ask for a subscription fees to access the water quality records and other related information.
+4. Inequitable distribution of water: bureaucracy and corruption can prevent few specific users from creating purchase request.
 Blockchain to the rescue:
 Transparency: With blockchain based solution each buyer will have transparent access to the water quality being offered by the supplier and whether the supplier is authorized personnel.
 No bureaucracy or corruption: since buyer are only required to share their account address, any user can create purchase request.
